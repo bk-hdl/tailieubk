@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./scripts/*"],
+      "@common/*": ["../common/*"]
+    }
+  },
+  "include": [
+    "script/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
