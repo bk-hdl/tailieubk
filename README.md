@@ -18,3 +18,5 @@
     + `yarn install`
     + `yarn dev` (server run on port 3000)
     + Access to `http://localhost:3000/api/v1/sample` to test.
+- Swagger UI:
+    + `http://localhost:3000/doc/swagger`
