@@ -37,7 +37,7 @@ class TagService {
         */
         console.log("removeTag: "+id);
         if(id < 0 || id % 1 !== 0) {
-            return false;
+            return false;   
         }
         return true;
     }
