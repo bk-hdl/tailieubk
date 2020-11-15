@@ -8,7 +8,7 @@ import StatusCode from "@common/enums/statusCode"
 class TagController {
     async getAllTags(request: Request, reponse: Response, next: NextFunction) {
         try {
-            let tags: SimpleTagModel[] = await tagService.getAllTags();
+            const tags: SimpleTagModel[] = await tagService.getAllTags();
             let tagsResponse = new GeneralResponse(tags, "OK")
             reponse.json(tagsResponse);
         } catch (error) {
@@ -16,15 +16,21 @@ class TagController {
         }    
     }
 
+    async getTag(request: Request, reponse: Response, next: NextFunction) {
+        try {
+            let id = request.params.id; 
+            let tag: SimpleTagModel = await tagService.getTag(Number(id));
+            reponse.json(new GeneralResponse({tag}, 'OK'));
+        } catch (error) {
+            next(error)
+        }      
+    }
+
     async createTag(request: Request, reponse: Response, next: NextFunction) {
         try {
             let query: PostTagRequest = <PostTagRequest><unknown>request.query; 
-            let res: Boolean = await tagService.createTag(query);
-            if(res){
-                reponse.json(new GeneralResponse(res, 'OK', StatusCode.Success));
-            } else {
-                reponse.json(new GeneralResponse(res, 'Fail', StatusCode.Fail));
-            }
+            let tag: SimpleTagModel = await tagService.createTag(query);
+            reponse.json(new GeneralResponse({tag}, 'OK'));
         } catch (error) {
             next(error)
         }    
@@ -32,13 +38,12 @@ class TagController {
 
     async modifyTag(request: Request, reponse: Response, next: NextFunction) {
         try {
+            let id: number = Number(request.params.id)
             let query: PostTagRequest = <PostTagRequest><unknown>request.query; 
-            let res: Boolean = await tagService.modifyTag(query);
-            if(res){
-                reponse.json(new GeneralResponse(res, 'OK', StatusCode.Success));
-            } else {
-                reponse.json(new GeneralResponse(res, 'Fail', StatusCode.Fail));
-            }
+            query.id = id;
+
+            let tag: SimpleTagModel = await tagService.modifyTag(query);
+            reponse.json(new GeneralResponse({tag}, 'OK'));
         } catch (error) {
             next(error)
         }     
@@ -46,19 +51,9 @@ class TagController {
 
     async removeTag(request: Request, reponse: Response, next: NextFunction) {
         try {
-            let id = request.query.id; 
-            let num = Number(id);
-            if(isNaN(num) || typeof(num) !== 'number'){
-                reponse.json(new GeneralResponse(null, 'Fail', StatusCode.Fail));
-                return;
-            }
-
-            let res: Boolean = await tagService.removeTag(num);
-            if(res){
-                reponse.json(new GeneralResponse(res, 'OK', StatusCode.Success));
-            } else {
-                reponse.json(new GeneralResponse(res, 'Fail', StatusCode.Fail));
-            }
+            let id = request.params.id; 
+            let success: Boolean = await tagService.removeTag(Number(id));
+            reponse.json(new GeneralResponse({success}, 'OK'));
         } catch (error) {
             next(error)
         }      
